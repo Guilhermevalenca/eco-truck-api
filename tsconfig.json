@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2023",
-    "rootDir": "./src",
+    "rootDirs": ["./src", "./app"],
     "module": "commonjs",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -11,9 +11,9 @@
       "@routes/*": ["./src/routes/*"],
       "@models/*": ["./src/models/*"],
       "@socket/*": ["./src/sockets/*"],
-      "@controllers/*": ["./src/http/controllers"],
-      "@middlewares/*": ["./src/http/middlewares"],
-      "@requests/*": ["./src/http/requests"],
+      "@controllers/*": ["./src/http/controllers/*"],
+      "@middlewares/*": ["./src/http/middlewares/*"],
+      "@requests/*": ["./src/http/requests/*"],
       "@config/*": ["./app/config/*"],
       "@interfaces/*": ["./app/interfaces/*"],
       "@services/*": ["./app/services/*"]

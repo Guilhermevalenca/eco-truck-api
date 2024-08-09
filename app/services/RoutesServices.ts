@@ -1,15 +1,14 @@
 import {Express} from "express";
-import {readdirSync} from "fs";
+import Services from "@services/Services";
 import {join} from 'path';
 
-export default class RoutesServices {
+export default class RoutesServices extends Services {
 
     static async instanceRoutes(app: Express) {
         try {
-            const directory = join(__dirname, '../../src/routes');
-            const files = readdirSync(directory);
-            for (let file of files) {
-                await import(join(directory, file)).then(module => module.default(app));
+            const instanceDirectory = this.instanceDirectory('../../src/routes');
+            for (let file of instanceDirectory.files) {
+                await import(join(instanceDirectory.directory, file)).then(module => module.default(app));
             }
         } catch (error: any) {
             throw error;

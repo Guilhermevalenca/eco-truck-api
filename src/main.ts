@@ -23,7 +23,7 @@ expressConfig(app);
     await RoutesServices.instanceRoutes(app);
 
     io.on("connection", async (socket: Socket  ) => {
-        await SocketsServices.instanceRoutes(io,  socket);
+        await SocketsServices.instanceSockets(io,  socket);
     });
 
     httpServer.listen(env.PORT ?? 3000);
