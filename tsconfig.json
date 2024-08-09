@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "rootDir": "./src",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@routes/*": ["./src/routes/*"],
+      "@models/*": ["./src/models/*"],
+      "@socket/*": ["./src/sockets/*"],
+      "@controllers/*": ["./src/http/controllers"],
+      "@middlewares/*": ["./src/http/middlewares"],
+      "@requests/*": ["./src/http/requests"],
+      "@config/*": ["./app/config/*"],
+      "@interfaces/*": ["./app/interfaces/*"],
+      "@services/*": ["./app/services/*"]
+    }
+  }
+}
