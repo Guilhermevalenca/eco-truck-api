@@ -3,18 +3,16 @@ import cors from "cors";
 import env from "./env";
 import session from 'express-session';
 
-export default function (app: Express): void {
+export default function (app: Express): Express {
     app.use(express.json());
     app.use(cors({
         origin: env.CORS,
-        credentials: true
+        credentials: true,
     }));
     app.use(session({
         secret: env.SECRET_KEY ?? 'secret default',
         resave: true,
-        cookie: {
-            secure: true
-        },
         saveUninitialized: true
     }));
+    return app;
 }

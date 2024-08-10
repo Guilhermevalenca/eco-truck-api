@@ -5,6 +5,14 @@ import env from "@config/env";
 import expressConfig from "@config/expressConfig";
 import RoutesServices from "@services/RoutesServices";
 import SocketsServices from "@services/SocketsServices";
+import IUser from "@interfaces/IUser";
+
+declare module "express-session" {
+    interface SessionData {
+        auth: boolean | null | undefined;
+        user: IUser | null | undefined;
+    }
+}
 
 //instances
 const app = express();
@@ -26,6 +34,6 @@ expressConfig(app);
         await SocketsServices.instanceSockets(io,  socket);
     });
 
-    httpServer.listen(env.PORT ?? 3000);
+    httpServer.listen(Number(env.PORT) ?? 3000);
     console.log('start', env.PORT ?? 3000);
 })();

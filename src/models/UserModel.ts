@@ -5,7 +5,7 @@ export default class UserModel extends Database{
     private constructor() {
         super();
     }
-    static get instance() {
+    static instance() {
         const instance: PrismaClient = this.getInstance();
         return instance.user;
     }
