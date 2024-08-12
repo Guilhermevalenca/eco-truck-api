@@ -26,14 +26,19 @@ const io = new Server(httpServer, {
 //config express:
 expressConfig(app);
 
-(async () => {
-    //routes:
+async function startedServer(): Promise<void> {
+    //import routes:
     await RoutesServices.instanceRoutes(app);
 
     io.on("connection", async (socket: Socket  ) => {
+        //import sockets
         await SocketsServices.instanceSockets(io,  socket);
     });
 
     httpServer.listen(Number(env.PORT) ?? 3000);
-    console.log('start', env.PORT ?? 3000);
-})();
+}
+
+startedServer()
+    .then(() => {
+        console.log('start', env.PORT ?? 3000);
+    })

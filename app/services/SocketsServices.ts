@@ -3,7 +3,7 @@ import {Server, Socket} from "socket.io";
 import Services from "@services/Services";
 
 export default class SocketsServices extends Services {
-    static async instanceSockets(io: Server, socket: Socket) {
+    static async instanceSockets(io: Server, socket: Socket): Promise<void> {
         try {
             const instanceDirectory = this.instanceDirectory('../../src/sockets');
             for (let file of instanceDirectory.files) {

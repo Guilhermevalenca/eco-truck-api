@@ -3,7 +3,7 @@ import cors from "cors";
 import env from "./env";
 import session from 'express-session';
 
-export default function (app: Express): Express {
+export default function (app: Express): void {
     app.use(express.json());
     app.use(cors({
         origin: env.CORS,
@@ -14,5 +14,4 @@ export default function (app: Express): Express {
         resave: true,
         saveUninitialized: true
     }));
-    return app;
 }

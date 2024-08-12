@@ -4,7 +4,7 @@ export default async function AuthMiddleware(
     req: Request,
     res: Response,
     next: NextFunction
-) {
+): Promise<void> {
     if (req.session.auth) {
         next();
     } else {

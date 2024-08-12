@@ -14,7 +14,8 @@ export default class AuthController {
         }
         return this._instance;
     }
-    async login(req: Request, res: Response) {
+    async login(req: Request, res: Response): Promise<void> {
+        // await new Promise((resolve) => setTimeout(resolve, 2000));
         const data: IUser = req.body as IUser;
         const validation = await loginRequest(data);
 
@@ -55,7 +56,7 @@ export default class AuthController {
                 .status(400).end();
         }
     }
-    async register(req: Request, res: Response) {
+    async register(req: Request, res: Response): Promise<void> {
         const data: IUser = req.body as IUser;
         const validation = await registerRequest(data);
 
@@ -97,9 +98,15 @@ export default class AuthController {
                 .status(400).end();
         }
     }
-    async logout(req: Request, res: Response) {
+    async logout(req: Request, res: Response): Promise<void> {
         req.session.auth = false;
         req.session.user = undefined;
         res.status(200).end();
+    }
+    async isLogged(req: Request, res: Response): Promise<void> {
+        res.json({
+            isLogged: !!req.session.user && !!req.session.user.id
+        })
+            .status(200);
     }
 }

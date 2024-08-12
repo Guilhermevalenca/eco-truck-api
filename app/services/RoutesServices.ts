@@ -4,7 +4,7 @@ import {join} from 'path';
 
 export default class RoutesServices extends Services {
 
-    static async instanceRoutes(app: Express) {
+    static async instanceRoutes(app: Express): Promise<void> {
         try {
             const instanceDirectory = this.instanceDirectory('../../src/routes');
             for (let file of instanceDirectory.files) {
