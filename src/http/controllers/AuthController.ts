@@ -27,33 +27,37 @@ export default class AuthController {
                 },
             });
             if(!user) {
-                res.json({
-                    success: false,
-                })
-                    .status(401).end();
+                res.status(401)
+                    .json({
+                        success: false,
+                    })
+                    .end();
                 return;
             }
             if (CryptServices.decryptData(user.password) === validation.data.password) {
                 req.session.auth = true;
                 req.session.user = user;
-                res.json({
-                    ...validation,
-                    data: {
-                        ...user,
-                        password: undefined
-                    }
-                })
-                    .status(200).end();
+                res.status(200)
+                    .json({
+                        ...validation,
+                        data: {
+                            ...user,
+                            password: undefined
+                        }
+                    })
+                    .end();
             } else {
-                res.json({
-                    success: false
-                })
-                    .status(401).end();
+                res.status(401)
+                    .json({
+                        success: false
+                    })
+                    .end();
             }
         } else {
             req.session.auth = false;
-            res.json(validation.error.message)
-                .status(400).end();
+            res.status(400)
+                .json(validation.error.formErrors.fieldErrors)
+                .end();
         }
     }
     async register(req: Request, res: Response): Promise<void> {
@@ -73,40 +77,46 @@ export default class AuthController {
                     });
                     req.session.auth = true;
                     req.session.user = user;
-                    res.json({
-                        ...validation,
-                        data: {
-                            ...user,
-                            password: undefined
-                        }
-                    })
-                        .status(201).end();
+                    res.status(201)
+                        .json({
+                            ...validation,
+                            data: {
+                                ...user,
+                                password: undefined
+                            }
+                        })
+                        .end();
                 } catch (error: any) {
-                    res.json(error.message)
-                        .status(400).end();
+                    res.status(400)
+                        .json(error.message)
+                        .end();
                 }
             } else {
                 req.session.auth = false;
-                res.json(validation.error.message)
-                    .status(400).end();
+                res.status(400)
+                    .json(validation.error.formErrors.fieldErrors)
+                    .end();
             }
         } else {
             req.session.auth = false;
-            res.json({
-                success: false
-            })
-                .status(400).end();
+            res.status(400)
+                .json({
+                    success: false
+                })
+                .end();
         }
     }
     async logout(req: Request, res: Response): Promise<void> {
         req.session.auth = false;
         req.session.user = undefined;
-        res.status(200).end();
+        res.status(200)
+            .end();
     }
     async isLogged(req: Request, res: Response): Promise<void> {
-        res.json({
-            isLogged: !!req.session.user && !!req.session.user.id
-        })
-            .status(200);
+        res.status(200)
+            .json({
+                isLogged: !!req.session.user && !!req.session.user.id
+            })
+            .end();
     }
 }
