@@ -4,6 +4,7 @@ import updateProfileRequest from "@requests/user/updateProfileRequest";
 import UserModel from "@models/UserModel";
 import updatePasswordRequest, {IUpdatePasswordRequest} from "@requests/user/updatePasswordRequest";
 import CryptServices from "@services/CryptServices";
+import deleteRequest from "@requests/user/deleteRequest";
 
 export default class UserController {
     private static _instance: UserController | undefined;
@@ -61,9 +62,44 @@ export default class UserController {
                 data: {
                     password: CryptServices.encryptData(validation.data.password)
                 }
-            });
-            res.status(204)
+            })
+                .then(() => {
+                    res.status(204)
+                        .end();
+                })
+                .catch(() => {
+                    res.status(304)
+                        .end();
+                })
+        } else {
+            res.status(400)
+                .json(validation.error.formErrors.fieldErrors)
                 .end();
+        }
+    }
+    async delete(req: Request, res: Response): Promise<void> {
+        const data: IUser = {
+            ...req.body,
+            email: req.session.user?.email
+        } as IUser;
+        const validation = await deleteRequest(data);
+        if(validation.success) {
+            const userModel = UserModel.instance();
+            await userModel.delete({
+                where: {
+                    email: data.email
+                }
+            })
+                .then(() => {
+                    req.session.auth = false;
+                    req.session.user = null;
+                    res.status(204)
+                        .end();
+                })
+                .catch(() => {
+                    res.status(304)
+                        .end();
+                });
         } else {
             res.status(400)
                 .json(validation.error.formErrors.fieldErrors)

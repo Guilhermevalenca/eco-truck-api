@@ -1,4 +1,4 @@
-import express from "express";
+import express, {Request,  Response} from "express";
 import {createServer} from 'http';
 import {Server, Socket} from 'socket.io';
 import env from "@config/env";
