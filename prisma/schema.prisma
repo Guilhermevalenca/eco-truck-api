@@ -28,3 +28,9 @@ model Todo {
   description String  @db.LongText
   status      Boolean @default(false)
 }
+
+model Post {
+  id      Int    @id @default(autoincrement())
+  tittle  String @db.VarChar(255)
+  content String @db.LongText
+}
