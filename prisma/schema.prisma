@@ -21,3 +21,11 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 }
+
+model Movie {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(255)
+  genre     String   @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
