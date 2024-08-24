@@ -67,48 +67,34 @@ export default class AuthController {
     const data: IUser = req.body as IUser;
     const validation = await registerRequest(data);
 
-    if (data.name && data.email && data.password) {
-      if (validation.success) {
-        const userModel = UserModel.instance();
-        try {
-          const user = await userModel.create({
+    if (validation.success) {
+      const userModel = UserModel.instance();
+      await (async () => {
+        const user = await userModel.create({
+          data: {
+            name: String(data.name),
+            email: data.email,
+            password: CryptServices.encryptData(String(data.password)),
+          },
+        });
+        req.session.auth = true;
+        req.session.user = user;
+        res
+          .status(201)
+          .json({
+            ...validation,
             data: {
-              name: data.name,
-              email: data.email,
-              password: CryptServices.encryptData(data.password),
+              ...user,
+              password: undefined,
             },
-          });
-          req.session.auth = true;
-          req.session.user = user;
-          res
-            .status(201)
-            .json({
-              ...validation,
-              data: {
-                ...user,
-                password: undefined,
-              },
-            })
-            .end();
-        } catch (error) {
-          if (error) {
-            res.status(400).json(error).end();
-          } else {
-            res.status(400).end();
-          }
-        }
-      } else {
-        req.session.auth = false;
-        res.status(400).json(validation.error.formErrors.fieldErrors).end();
-      }
+          })
+          .end();
+      })().catch((error) => {
+        res.status(400).json(error.message).end();
+      });
     } else {
       req.session.auth = false;
-      res
-        .status(400)
-        .json({
-          success: false,
-        })
-        .end();
+      res.status(400).json(validation.error.formErrors.fieldErrors).end();
     }
   }
   async logout(req: Request, res: Response): Promise<void> {
